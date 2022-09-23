@@ -14,13 +14,25 @@ export class GameService {
           has: incomingName,
         },
       },
+      include: {
+        releases: {},
+      },
     });
 
-    if (game) {
-      return game;
-    }
+    return game;
+  }
 
-    return null;
+  async fetchGameById(id: string): Promise<Game | null> {
+    const game = await this.prisma.game.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        releases: {},
+      },
+    });
+
+    return game;
   }
 
   async searchGamesByFuzzyName(incomingName: string): Promise<Game[] | null> {
