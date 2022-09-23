@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: ps1
+      DATABASE_URL: "postgresql://devuser:devpassword@postgres:5432/ps1?schema=ps1&sslmode=prefer"
+    #env_file:
+    #  - .env
+    volumes:
+      - .:/app
+      - nodemodules:/app/node_modules
+      #- ./:/src/
+      #- nodemodules:/src/node_modules
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres:
+    name: nest-db
+  nodemodules: {}
