@@ -30,6 +30,7 @@ export class GameService {
       select: {
         id: true,
         name: true,
+        developer: false,
       },
       orderBy: {
         name: 'asc',

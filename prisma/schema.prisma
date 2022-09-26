@@ -13,12 +13,13 @@ datasource db {
 enum GameRegion {
   PAL
   NA
-  JAPAN
+  JP
 }
 
 model GameRelease {
   id          String     @id @unique @default(uuid()) @db.Uuid
   releaseDate String
+  name        String 
   region      GameRegion
 
   game   Game   @relation(fields: [gameId], references: [id])
@@ -29,6 +30,8 @@ model Game {
   id String @id @unique @default(uuid()) @db.Uuid
 
   name String[]
+
+  developer String
 
   releases GameRelease[]
 }
