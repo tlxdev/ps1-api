@@ -1,10 +1,11 @@
 -- CreateEnum
-CREATE TYPE "GameRegion" AS ENUM ('PAL', 'NA', 'JAPAN');
+CREATE TYPE "GameRegion" AS ENUM ('PAL', 'NA', 'JP');
 
 -- CreateTable
 CREATE TABLE "GameRelease" (
     "id" UUID NOT NULL,
     "releaseDate" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "region" "GameRegion" NOT NULL,
     "gameId" UUID NOT NULL,
 
@@ -15,6 +16,7 @@ CREATE TABLE "GameRelease" (
 CREATE TABLE "Game" (
     "id" UUID NOT NULL,
     "name" TEXT[],
+    "developer" TEXT NOT NULL,
 
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
