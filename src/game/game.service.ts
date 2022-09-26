@@ -24,7 +24,8 @@ export class GameService {
 
   async getPaginatedGameList(page: number): Promise<Game[]> {
     const games = await this.prisma.game.findMany({
-      skip: page * 5,
+      // Pages start at 1
+      skip: (page - 1) * 5,
       take: 5,
       select: {
         id: true,
