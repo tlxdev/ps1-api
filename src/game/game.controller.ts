@@ -1,4 +1,4 @@
-import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Param, NotFoundException, Query, BadRequestException } from '@nestjs/common';
 import { Game } from '@prisma/client';
 import { GameService } from './game.service';
 import { ParseUUIDPipe } from '@nestjs/common/pipes';
@@ -15,6 +15,14 @@ export class GameDto {
 @Controller()
 export class GameController {
   constructor(private readonly gameService: GameService) {}
+
+  @Get('/games')
+  public getPaginatedGameList(@Query('page') page: number): Promise<Game[]> {
+    if (page < 0) {
+      throw new BadRequestException("Parameter 'page' must be an non-negative integer");
+    }
+    return this.gameService.getPaginatedGameList(page);
+  }
 
   @Get('/game/:id')
   public async fetchGameById(@Param('id', ParseUUIDPipe) id: string): Promise<Game> {
